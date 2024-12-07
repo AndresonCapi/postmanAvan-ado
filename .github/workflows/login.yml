@@ -30,7 +30,7 @@ jobs:
       # Etapa 4: Executar a coleção do Newman
       - name: Execute Newman Collection
         run:
-          newman run ./2_login.json -g ./globals.json -e ./postman.json --delay-request 2000 --reporters cli,htmlextra --reporter-htmlextra-export ./result/report.html
+          newman run ./2_login.json -g ./globals.json -e ./Postman.json --delay-request 2000 --reporters cli,htmlextra --reporter-htmlextra-export ./result/report.html
 
       # Etapa 5: Arquivar o relatório gerado
       - name: Archive production artifacts
