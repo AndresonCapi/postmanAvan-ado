@@ -29,8 +29,7 @@ jobs:
 
       # Etapa 4: Executar a coleção do Newman
       - name: Execute Newman Collection
-        run: |
-          mkdir -p ./result
+        run:
           newman run ./2_login.json -g ./global.json -e ./postman.json --delay-request 2000 --reporters cli,htmlextra --reporter-htmlextra-export ./result/report.html
 
       # Etapa 5: Arquivar o relatório gerado
