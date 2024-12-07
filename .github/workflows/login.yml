@@ -1,36 +1,41 @@
 name: login
 
 on:
-
   push:
     branches: ["main"]
   pull_request:
     branches: ["main"]
-
   workflow_dispatch:
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
 
     steps:
-
+      # Etapa 1: Fazer checkout do repositório
       - uses: actions/checkout@v3
 
-      - name: Step 1 Check version Newman and Node
+      # Etapa 2: Instalar dependências necessárias
+      - name: Install Dependencies
         run: |
-              newman --version
-              node -- version
-    
-      - name: Step 2 Install Newman-Reporter-Htmlextra
-        run: sudo npm intall -g newman-reporter-htmlextra
+          sudo npm install -g newman
+          sudo npm install -g newman-reporter-htmlextra
 
-      - name: Step 3 Execute collection
-        run: newman run ./2_login.json -g ./global.json -e ./postman.json --deplay-request 2 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/report.html
+      # Etapa 3: Verificar versões do Newman e Node.js
+      - name: Check versions of Newman and Node.js
+        run: |
+          newman --version
+          node --version
 
-      - name: Step 4 Archive production artifacts
+      # Etapa 4: Executar a coleção do Newman
+      - name: Execute Newman Collection
+        run: |
+          mkdir -p ./result
+          newman run ./2_login.json -g ./global.json -e ./postman.json --delay-request 2000 --reporters cli,htmlextra --reporter-htmlextra-export ./result/report.html
+
+      # Etapa 5: Arquivar o relatório gerado
+      - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
-              name: report
-              path: ./result/report.html
+          name: report
+          path: ./result/report.html
